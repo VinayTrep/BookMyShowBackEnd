@@ -2,9 +2,11 @@ package com.example.BookMyShow.dto;
 
 import com.example.BookMyShow.model.Seat;
 
-public record SeatResponseDto() {
+import java.util.UUID;
+
+public record SeatResponseDto(UUID seatId,String SeatNumber, int columnNumber, int rowsNumber, String SeatType, String seatStatus) {
 
     public static SeatResponseDto fromSeat(Seat seat) {
-        return new SeatResponseDto();
+        return new SeatResponseDto(seat.getId(),seat.getSeatNumber(),seat.getColumnNumber(), seat.getRowsNumber(), seat.getSeatType().name(),seat.getSeatStatus().name());
     }
 }

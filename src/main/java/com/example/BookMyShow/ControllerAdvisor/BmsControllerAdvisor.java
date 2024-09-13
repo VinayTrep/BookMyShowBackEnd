@@ -1,9 +1,6 @@
 package com.example.BookMyShow.ControllerAdvisor;
 
-import com.example.BookMyShow.controller.AuditoriumController;
-import com.example.BookMyShow.controller.CityController;
-import com.example.BookMyShow.controller.TheaterController;
-import com.example.BookMyShow.controller.UserController;
+import com.example.BookMyShow.controller.*;
 import com.example.BookMyShow.dto.ExceptionResponseDto;
 import com.example.BookMyShow.exception.*;
 import org.springframework.http.HttpStatus;
@@ -11,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-@ControllerAdvice(basePackageClasses = {CityController.class, TheaterController.class, AuditoriumController.class, UserController.class})
+@ControllerAdvice(basePackageClasses = {CityController.class, TheaterController.class, AuditoriumController.class, UserController.class, SeatController.class})
 public class BmsControllerAdvisor {
 
     @ExceptionHandler(CityNotFoundException.class)
@@ -64,6 +61,28 @@ public class BmsControllerAdvisor {
 
     @ExceptionHandler({InvalidEmailFormateException.class,InvalidPasswordFormateException.class})
     public ResponseEntity<ExceptionResponseDto> handleValidateUserControllerException(ValidateUserControllerException ex) {
+        ExceptionResponseDto responseDto = new ExceptionResponseDto(ex.getMessage(), 400);
+        return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(AuditoriumNotFoundException.class)
+    public ResponseEntity<ExceptionResponseDto> handleAuditoriumNotFoundException(AuditoriumNotFoundException ex) {
+        ExceptionResponseDto responseDto = new ExceptionResponseDto(ex.getMessage(), 404);
+        return new ResponseEntity<>(responseDto, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(SeatNotFoundException.class)
+    public ResponseEntity<ExceptionResponseDto> handleSeatNotFoundException(SeatNotFoundException ex) {
+        ExceptionResponseDto responseDto = new ExceptionResponseDto(ex.getMessage(), 404);
+        return new ResponseEntity<>(responseDto, HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler({SeatExistsException.class})
+    public ResponseEntity<ExceptionResponseDto> handleSeatExistsException(SeatExistsException ex) {
+        ExceptionResponseDto responseDto = new ExceptionResponseDto(ex.getMessage(), 400);
+        return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler({InvalidSeatStatusException.class,InvalidSeatTypeException.class})
+    public ResponseEntity<ExceptionResponseDto> handleValidateSeatControllerException(ValidateSeatControllerException ex) {
         ExceptionResponseDto responseDto = new ExceptionResponseDto(ex.getMessage(), 400);
         return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
     }
