@@ -14,7 +14,6 @@ public interface SeatService {
     SeatResponseDto addSeat(CreateSeatRequestDto requestDto);
     List<SeatResponseDto> addSeats(List<CreateSeatRequestDto> requestDtos);
     SeatResponseDto getSeat(UUID seatId) throws SeatNotFoundException;
-    SeatResponseDto getSeatBySeatNumber(String seatNumber) throws SeatNotFoundException;
     List<SeatResponseDto> getAllSeats(UUID auditoriumId) throws AuditoriumNotFoundException;
     SeatResponseDto updateSeat(UUID seatId,UpdateSeatRequestDto requestDto) throws AuditoriumNotFoundException, SeatNotFoundException;
     void deleteSeat(UUID seatId);

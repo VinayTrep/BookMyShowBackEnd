@@ -8,7 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-@ControllerAdvice(basePackageClasses = {CityController.class, TheaterController.class, AuditoriumController.class, UserController.class, SeatController.class})
+@ControllerAdvice(basePackageClasses = {CityController.class, TheaterController.class,
+        AuditoriumController.class, UserController.class, SeatController.class,
+        MovieController.class,ActorController.class})
 public class BmsControllerAdvisor {
 
     @ExceptionHandler(CityNotFoundException.class)
@@ -86,4 +88,21 @@ public class BmsControllerAdvisor {
         ExceptionResponseDto responseDto = new ExceptionResponseDto(ex.getMessage(), 400);
         return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(MovieNotFoundException.class)
+    public ResponseEntity<ExceptionResponseDto> handleMovieNotFoundException(MovieNotFoundException ex) {
+        ExceptionResponseDto responseDto = new ExceptionResponseDto(ex.getMessage(), 404);
+        return new ResponseEntity<>(responseDto, HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler(ActorNotFoundException.class)
+    public ResponseEntity<ExceptionResponseDto> handleActorNotFoundException(ActorNotFoundException ex) {
+        ExceptionResponseDto responseDto = new ExceptionResponseDto(ex.getMessage(), 404);
+        return new ResponseEntity<>(responseDto, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler({InvalidMovieFeatureException.class})
+    public ResponseEntity<ExceptionResponseDto> handleValidateMovieControllerException(ValidateMovieControllerException ex) {
+        ExceptionResponseDto responseDto = new ExceptionResponseDto(ex.getMessage(), 400);
+        return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
+    }
+
 }

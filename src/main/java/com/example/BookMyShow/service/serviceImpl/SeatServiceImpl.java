@@ -77,12 +77,6 @@ public class SeatServiceImpl implements SeatService {
     }
 
     @Override
-    public SeatResponseDto getSeatBySeatNumber(String seatNumber) throws SeatNotFoundException {
-        Seat seat = seatRepository.findBySeatNumber(seatNumber).orElseThrow(() -> new SeatNotFoundException("Invalid SeatNumber"));
-        return SeatResponseDto.fromSeat(seat);
-    }
-
-    @Override
     public List<SeatResponseDto> getAllSeats(UUID auditoriumId) throws AuditoriumNotFoundException {
         return seatRepository.findAllByAuditoriumId(auditoriumId).stream().map(SeatResponseDto::fromSeat).toList();
     }

@@ -43,11 +43,6 @@ public class SeatController {
         return ResponseEntity.ok(seatService.getSeat(seatId));
     }
 
-    @GetMapping("/get/{seatNumber}")
-    public ResponseEntity<SeatResponseDto> getSeatByNumber(@PathVariable("seatNumber")String  seatNumber) {
-        return ResponseEntity.ok(seatService.getSeatBySeatNumber(seatNumber));
-    }
-
     @GetMapping("/getall/{auditoriumId}")
     public ResponseEntity<List<SeatResponseDto>> getAllSeatsByAuditoriumId(@PathVariable("auditoriumId")UUID auditoriumId) {
         return ResponseEntity.ok(seatService.getAllSeats(auditoriumId));
