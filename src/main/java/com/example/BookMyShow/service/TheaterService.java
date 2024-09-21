@@ -11,9 +11,9 @@ import java.util.UUID;
 
 public interface TheaterService {
 
-    public TheaterResponseDto addTheater(CreateTheaterRequestDto theaterRequestDto) throws CityNotFoundException;
-    public TheaterResponseDto updateTheater(UUID id,UpdateTheaterRequestDto theaterRequestDto) throws TheaterNotFoundException, CityNotFoundException;
-    public void deleteTheater(UUID id);
-    public TheaterResponseDto getTheater(UUID id) throws  TheaterNotFoundException;
-    List<TheaterResponseDto> getAllTheaters();
+     TheaterResponseDto addTheater(CreateTheaterRequestDto theaterRequestDto) throws CityNotFoundException;
+     TheaterResponseDto updateTheater(UUID id,UpdateTheaterRequestDto theaterRequestDto) throws TheaterNotFoundException, CityNotFoundException;
+     void deleteTheater(UUID id);
+     TheaterResponseDto getTheater(UUID id) throws  TheaterNotFoundException;
+     List<TheaterResponseDto> getAllTheaters();
 }

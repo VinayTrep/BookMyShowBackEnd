@@ -15,7 +15,7 @@ public class SimplePriceGenerationStrategy implements PriceGenerationStrategy {
 
     @Override
     public List<ShowSeat> generatePrice(Show show, List<Seat> seats) {
-        List<ShowSeat> showSeats = new ArrayList<ShowSeat>();
+        List<ShowSeat> showSeats = new ArrayList<>();
         for (Seat seat : seats) {
             ShowSeat showSeat = new ShowSeat();
             showSeat.setShow(show);

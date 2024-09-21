@@ -12,10 +12,10 @@ import java.util.UUID;
 
 public interface AuditoriumService {
 
-    public AuditoriumResponseDto addAuditorium(CreateAuditoriumRequestDto createAuditoriumDto) throws TheaterNotFoundException;
-    public List<AuditoriumResponseDto> getAllAuditoriums();
-    public AuditoriumResponseDto getAuditoriumById(UUID auditoriumId) throws AuditoriumNotFoundException;
-    public AuditoriumResponseDto updateAuditorium(UUID auditoriumId, UpdateAuditoriumRequestDto updateAuditoriumRequestDto) throws TheaterNotFoundException, AuditoriumNotFoundException;
-    public void deleteAuditorium(UUID auditoriumId);
+     AuditoriumResponseDto addAuditorium(CreateAuditoriumRequestDto createAuditoriumDto) throws TheaterNotFoundException;
+     List<AuditoriumResponseDto> getAllAuditoriums();
+     AuditoriumResponseDto getAuditoriumById(UUID auditoriumId) throws AuditoriumNotFoundException;
+     AuditoriumResponseDto updateAuditorium(UUID auditoriumId, UpdateAuditoriumRequestDto updateAuditoriumRequestDto) throws TheaterNotFoundException, AuditoriumNotFoundException;
+     void deleteAuditorium(UUID auditoriumId);
 
 }

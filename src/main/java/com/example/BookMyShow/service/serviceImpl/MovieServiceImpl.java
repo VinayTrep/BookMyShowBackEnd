@@ -11,11 +11,9 @@ import com.example.BookMyShow.model.constants.MovieGenre;
 import com.example.BookMyShow.repository.ActorRepository;
 import com.example.BookMyShow.repository.MovieRepository;
 import com.example.BookMyShow.service.MovieService;
-import jakarta.persistence.Enumerated;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -74,7 +72,6 @@ public class MovieServiceImpl implements MovieService {
             }
 //            removes the movie from actor_movies when an actor is removed from the movies
             for (Actor actor : movie.getActors()) {
-                List<Movie> movieList = actor.getMovies() != null ? actor.getMovies() : new ArrayList<>();
                 if(!actors.contains(actor)){
                     actor.getMovies().remove(movie);
                 }

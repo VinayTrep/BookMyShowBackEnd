@@ -9,7 +9,6 @@ import com.example.BookMyShow.model.City;
 import com.example.BookMyShow.model.Theater;
 import com.example.BookMyShow.repository.CityRepository;
 import com.example.BookMyShow.repository.TheaterRepository;
-import com.example.BookMyShow.service.CityService;
 import com.example.BookMyShow.service.TheaterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

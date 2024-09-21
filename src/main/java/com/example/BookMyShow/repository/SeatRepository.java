@@ -11,6 +11,5 @@ import java.util.UUID;
 @Repository
 public interface SeatRepository extends JpaRepository<Seat, UUID> {
     Optional<Seat> findSeatByColumnNumberAndRowsNumberAndAuditoriumId(int columnNumber, int rowsNumber, UUID auditoriumId);
-    Optional<Seat> findBySeatNumber(String seatNumber);
     List<Seat> findAllByAuditoriumId(UUID auditoriumId);
 }

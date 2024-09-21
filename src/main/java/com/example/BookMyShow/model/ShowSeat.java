@@ -12,6 +12,7 @@ import lombok.Setter;
 public class ShowSeat extends BaseModel{
 
     private int price;
+
     @Enumerated(EnumType.ORDINAL)
     private ShowSeatStatus showSeatStatus;
 

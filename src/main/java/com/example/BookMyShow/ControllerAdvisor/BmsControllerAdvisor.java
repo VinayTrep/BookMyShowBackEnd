@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice(basePackageClasses = {CityController.class, TheaterController.class,
         AuditoriumController.class, UserController.class, SeatController.class,
-        MovieController.class,ActorController.class})
+        MovieController.class,ActorController.class,
+        ShowController.class,TicketController.class})
+
 public class BmsControllerAdvisor {
 
     @ExceptionHandler(CityNotFoundException.class)
@@ -103,6 +105,24 @@ public class BmsControllerAdvisor {
     public ResponseEntity<ExceptionResponseDto> handleValidateMovieControllerException(ValidateMovieControllerException ex) {
         ExceptionResponseDto responseDto = new ExceptionResponseDto(ex.getMessage(), 400);
         return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(TicketNotFoundException.class)
+    public ResponseEntity<ExceptionResponseDto> handleTicketNotFoundException(TicketNotFoundException ex) {
+        ExceptionResponseDto responseDto = new ExceptionResponseDto(ex.getMessage(), 404);
+        return new ResponseEntity<>(responseDto, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ShowSeatNotFoundException.class)
+    public ResponseEntity<ExceptionResponseDto> handleShowSeatNotFoundException(ShowSeatNotFoundException ex) {
+        ExceptionResponseDto responseDto = new ExceptionResponseDto(ex.getMessage(), 404);
+        return new ResponseEntity<>(responseDto, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ShowSeatUnavailableException.class)
+    public ResponseEntity<ExceptionResponseDto> handleShowSeatUnavailableException(ShowSeatUnavailableException ex) {
+        ExceptionResponseDto responseDto = new ExceptionResponseDto(ex.getMessage(), 404);
+        return new ResponseEntity<>(responseDto, HttpStatus.NOT_FOUND);
     }
 
 }

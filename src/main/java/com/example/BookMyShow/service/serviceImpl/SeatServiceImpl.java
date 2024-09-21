@@ -52,9 +52,9 @@ public class SeatServiceImpl implements SeatService {
     }
     //Create a seat if the auditorium is valid and also if the seat with same row and column does not exist
     @Override
-    public List<SeatResponseDto> addSeats(List<CreateSeatRequestDto> requestDtos) throws AuditoriumNotFoundException{
+    public List<SeatResponseDto> addSeats(List<CreateSeatRequestDto> requestDTOs) throws AuditoriumNotFoundException{
         List<Seat> seats = new ArrayList<>();
-        for (CreateSeatRequestDto requestDto : requestDtos) {
+        for (CreateSeatRequestDto requestDto : requestDTOs) {
             Auditorium auditorium = getAuditorium(requestDto.auditoriumId());
             Optional<Seat> seatOptional = seatRepository.findSeatByColumnNumberAndRowsNumberAndAuditoriumId(requestDto.columnNumber(),requestDto.rowsNumber() ,requestDto.auditoriumId());
             if(seatOptional.isPresent()){

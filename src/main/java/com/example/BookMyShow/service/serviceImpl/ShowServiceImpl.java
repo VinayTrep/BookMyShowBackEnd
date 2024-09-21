@@ -17,7 +17,6 @@ import com.example.BookMyShow.service.Strategy.PriceGenerationStrategy;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -49,7 +48,7 @@ public class ShowServiceImpl implements ShowService {
         show.setMovie(movie);
 
         //set show in the auditorium and then set auditorium in the show
-        List<Show> showList = auditorium.getShows() != null ? auditorium.getShows() : new ArrayList<Show>();
+        List<Show> showList = auditorium.getShows() != null ? auditorium.getShows() : new ArrayList<>();
         showList.add(show);
         auditorium.setShows(showList);
         show.setAuditorium(auditorium);
@@ -76,8 +75,16 @@ public class ShowServiceImpl implements ShowService {
 
 
     @Override
-    public BMSShowResponseDto updateShow(UpdateShowRequestDto updateShowRequestDto) {
-        return null;
+    public BMSShowResponseDto updateShow(UUID showID,UpdateShowRequestDto updateShowRequestDto) throws ShowNotFoundException{
+        Show show = showRepository.findById(showID).orElseThrow(() -> new ShowNotFoundException("Show Not Found"));
+        Movie movie = movieRepository.findById(updateShowRequestDto.movieId()).orElseThrow(() -> new MovieNotFoundException("Movie Not Found"));
+        Auditorium auditorium = auditoriumRepository.findById(updateShowRequestDto.auditoriumId()).orElseThrow(() -> new AuditoriumNotFoundException("Auditorium Not Found"));
+        show.setStartTime(Instant.parse(updateShowRequestDto.startTime()));
+        show.setEndTime(Instant.parse(updateShowRequestDto.endTime()));
+        show.setMovie(movie);
+        show.setAuditorium(auditorium);
+
+        return BMSShowResponseDto.fromShow(showRepository.save(show));
     }
 
     @Override

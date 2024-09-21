@@ -34,7 +34,7 @@ public class ActorServiceImpl implements ActorService {
         if(!requestDto.movieIds().isEmpty()){
             List<Movie> movieList = movieRepository.findAllByIdIn(requestDto.movieIds());
             for(Movie movie : movieList){
-                List<Actor> actorList = movie.getActors()!= null ? movie.getActors() : new ArrayList<Actor>();
+                List<Actor> actorList = movie.getActors()!= null ? movie.getActors() : new ArrayList<>();
                 actorList.add(actor);
                 movie.setActors(actorList);
             }
@@ -52,14 +52,13 @@ public class ActorServiceImpl implements ActorService {
         if(!requestDto.movieIds().isEmpty()){
             List<Movie> movieList = movieRepository.findAllByIdIn(requestDto.movieIds());
             for(Movie movie : movieList){
-                List<Actor> actorList = movie.getActors()!= null ? movie.getActors() : new ArrayList<Actor>();
+                List<Actor> actorList = movie.getActors()!= null ? movie.getActors() : new ArrayList<>();
                 if(!actorList.contains(actor)){
                     actorList.add(actor);
                 }
                 movie.setActors(actorList);
             }
             for(Movie movie : actor.getMovies()){
-                List<Actor> actorList = movie.getActors() != null ? movie.getActors() : new ArrayList<>();
                 if(!movieList.contains(movie)){
                     movie.getActors().remove(actor);
                 }

@@ -9,10 +9,8 @@ import com.example.BookMyShow.model.City;
 import com.example.BookMyShow.repository.CityRepository;
 import com.example.BookMyShow.service.CityService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 

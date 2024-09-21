@@ -11,9 +11,9 @@ import java.util.UUID;
 
 public interface CityService {
 
-    public CityResponseDto addCity(CreateCityRequestDto requestDto);
-    public CityResponseDto getCityById(UUID id) throws CityNotFoundException;
-    public List<CitiesResponseDto> getAllCities();
-    public CityResponseDto updateCity(UUID id, UpdateCityRequestDto requestDto) throws CityNotFoundException;
-    public void deleteCity(UUID id);
+     CityResponseDto addCity(CreateCityRequestDto requestDto);
+     CityResponseDto getCityById(UUID id) throws CityNotFoundException;
+     List<CitiesResponseDto> getAllCities();
+     CityResponseDto updateCity(UUID id, UpdateCityRequestDto requestDto) throws CityNotFoundException;
+     void deleteCity(UUID id);
 }
