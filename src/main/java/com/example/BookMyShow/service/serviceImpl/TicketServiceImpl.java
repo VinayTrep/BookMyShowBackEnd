@@ -1,5 +1,6 @@
 package com.example.BookMyShow.service.serviceImpl;
 
+import com.example.BookMyShow.dto.CreatePaymentRequestDto;
 import com.example.BookMyShow.dto.CreateTicketRequestDto;
 import com.example.BookMyShow.dto.TicketResponseDto;
 import com.example.BookMyShow.exception.ShowNotFoundException;
@@ -10,9 +11,11 @@ import com.example.BookMyShow.model.Show;
 import com.example.BookMyShow.model.ShowSeat;
 import com.example.BookMyShow.model.Ticket;
 import com.example.BookMyShow.model.constants.ShowSeatStatus;
+import com.example.BookMyShow.model.constants.TicketStatus;
 import com.example.BookMyShow.repository.ShowRepository;
 import com.example.BookMyShow.repository.ShowSeatRepository;
 import com.example.BookMyShow.repository.TicketRepository;
+import com.example.BookMyShow.service.PaymentService;
 import com.example.BookMyShow.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,12 +32,14 @@ public class TicketServiceImpl implements TicketService {
     private final TicketRepository ticketRepository;
     private final ShowRepository showRepository;
     private final ShowSeatRepository showSeatRepository;
+    private final PaymentService paymentService;
 
     @Autowired
-    public TicketServiceImpl(TicketRepository ticketRepository, ShowRepository showRepository, ShowSeatRepository showSeatRepository) {
+    public TicketServiceImpl(TicketRepository ticketRepository, ShowRepository showRepository, ShowSeatRepository showSeatRepository, PaymentService paymentService) {
         this.ticketRepository = ticketRepository;
         this.showRepository = showRepository;
         this.showSeatRepository = showSeatRepository;
+        this.paymentService = paymentService;
     }
 
     @Override
@@ -58,6 +63,9 @@ public class TicketServiceImpl implements TicketService {
         ticket.setTotalPrice(totalCost);
         ticket.setShow(show);
         ticket.setShowSeats(showSeatList);
+        // call payment before you store the ticket
+        CreatePaymentRequestDto requestDto = new CreatePaymentRequestDto(ticket);
+        paymentService.makePayment(requestDto);
         return TicketResponseDto.toDto(ticketRepository.save(ticket));
     }
 

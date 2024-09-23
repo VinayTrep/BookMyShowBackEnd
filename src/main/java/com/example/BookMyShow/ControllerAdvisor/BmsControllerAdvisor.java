@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice(basePackageClasses = {CityController.class, TheaterController.class,
         AuditoriumController.class, UserController.class, SeatController.class,
         MovieController.class,ActorController.class,
-        ShowController.class,TicketController.class})
+        ShowController.class,TicketController.class,
+        PaymentController.class})
 
 public class BmsControllerAdvisor {
 
@@ -121,6 +122,11 @@ public class BmsControllerAdvisor {
 
     @ExceptionHandler(ShowSeatUnavailableException.class)
     public ResponseEntity<ExceptionResponseDto> handleShowSeatUnavailableException(ShowSeatUnavailableException ex) {
+        ExceptionResponseDto responseDto = new ExceptionResponseDto(ex.getMessage(), 404);
+        return new ResponseEntity<>(responseDto, HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler(PaymentNotFoundException.class)
+    public ResponseEntity<ExceptionResponseDto> handlePaymentNotFoundException(PaymentNotFoundException ex) {
         ExceptionResponseDto responseDto = new ExceptionResponseDto(ex.getMessage(), 404);
         return new ResponseEntity<>(responseDto, HttpStatus.NOT_FOUND);
     }
