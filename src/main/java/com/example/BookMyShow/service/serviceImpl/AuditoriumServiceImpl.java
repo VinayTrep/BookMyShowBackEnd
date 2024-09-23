@@ -12,6 +12,9 @@ import com.example.BookMyShow.repository.AuditoriumRepository;
 import com.example.BookMyShow.repository.TheaterRepository;
 import com.example.BookMyShow.service.AuditoriumService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -47,6 +50,7 @@ public class AuditoriumServiceImpl implements AuditoriumService {
     }
 
     @Override
+    @Cacheable(value = "Auditorium",key = "#auditoriumId")
     public AuditoriumResponseDto getAuditoriumById(UUID auditoriumId) throws AuditoriumNotFoundException {
         Auditorium auditorium = auditoriumRepository.findById(auditoriumId).orElseThrow(()-> new AuditoriumNotFoundException("Auditorium Not Found"));
 
@@ -54,6 +58,7 @@ public class AuditoriumServiceImpl implements AuditoriumService {
     }
 
     @Override
+    @CachePut(value = "Auditorium",key = "#auditoriumId")
     public AuditoriumResponseDto updateAuditorium(UUID auditoriumId, UpdateAuditoriumRequestDto updateAuditoriumRequestDto) throws TheaterNotFoundException, AuditoriumNotFoundException {
         Theater theater = theaterRepository.findById(updateAuditoriumRequestDto.theaterId()).orElseThrow(()-> new TheaterNotFoundException("Theater Not Found"));
         Auditorium auditorium = auditoriumRepository.findById(auditoriumId).orElseThrow(()-> new AuditoriumNotFoundException("Auditorium Not Found"));
@@ -69,7 +74,9 @@ public class AuditoriumServiceImpl implements AuditoriumService {
     }
 
     @Override
+    @CacheEvict(cacheNames = "Auditorium",key = "#auditoriumId")
     public void deleteAuditorium(UUID auditoriumId) {
+        Auditorium auditorium = auditoriumRepository.findById(auditoriumId).orElseThrow(()-> new AuditoriumNotFoundException("Auditorium Not Found"));
         auditoriumRepository.deleteById(auditoriumId);
     }
 }

@@ -2,11 +2,16 @@ package com.example.BookMyShow.dto;
 
 import com.example.BookMyShow.model.Ticket;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public record TicketResponseDto(UUID ticketId, String timeOfBooking, List<String> showSeat, TicketShowResponseDto show, int totalPrice, String ticketStatus) {
+public record TicketResponseDto(UUID ticketId, String timeOfBooking,
+                                List<String> showSeat,
+                                TicketShowResponseDto show,
+                                int totalPrice,
+                                String ticketStatus) implements Serializable {
 
     public static TicketResponseDto toDto(Ticket ticket) {
         return new TicketResponseDto( ticket.getId(), ticket.getTimeOfBooking().toString(),

@@ -14,6 +14,10 @@ import com.example.BookMyShow.repository.AuditoriumRepository;
 import com.example.BookMyShow.repository.SeatRepository;
 import com.example.BookMyShow.service.SeatService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -34,6 +38,7 @@ public class SeatServiceImpl implements SeatService {
     }
     //Create a seat if the auditorium is valid and also if the seat with same row and column does not exist
     @Override
+    @CachePut(cacheNames = "Seat", key = "#requestDto.auditoriumId()")
     public SeatResponseDto addSeat(CreateSeatRequestDto requestDto) throws AuditoriumNotFoundException{
         //check if column already exists
         Auditorium auditorium = getAuditorium(requestDto.auditoriumId());
@@ -52,6 +57,7 @@ public class SeatServiceImpl implements SeatService {
     }
     //Create a seat if the auditorium is valid and also if the seat with same row and column does not exist
     @Override
+    @CacheEvict(cacheNames = "Seat", allEntries = true)
     public List<SeatResponseDto> addSeats(List<CreateSeatRequestDto> requestDTOs) throws AuditoriumNotFoundException{
         List<Seat> seats = new ArrayList<>();
         for (CreateSeatRequestDto requestDto : requestDTOs) {
@@ -71,17 +77,20 @@ public class SeatServiceImpl implements SeatService {
     }
 
     @Override
+    @Cacheable(value = "Seat", key = "#seatId")
     public SeatResponseDto getSeat(UUID seatId) throws SeatNotFoundException {
         Seat seat = seatRepository.findById(seatId).orElseThrow(() -> new SeatNotFoundException("Invalid Seat ID"));
         return SeatResponseDto.fromSeat(seat);
     }
 
     @Override
+    @Cacheable(value = "Seat", key = "#auditoriumId")
     public List<SeatResponseDto> getAllSeats(UUID auditoriumId) throws AuditoriumNotFoundException {
         return seatRepository.findAllByAuditoriumId(auditoriumId).stream().map(SeatResponseDto::fromSeat).toList();
     }
 
     @Override
+    @CachePut( value = "Seat", key = "#seatId")
     public SeatResponseDto updateSeat(UUID seatId, UpdateSeatRequestDto requestDto) throws AuditoriumNotFoundException, SeatNotFoundException {
         Seat seat = seatRepository.findById(seatId).orElseThrow(() -> new SeatNotFoundException("Invalid Seat ID"));
         Auditorium auditorium = getAuditorium(requestDto.auditoriumId());
@@ -97,6 +106,9 @@ public class SeatServiceImpl implements SeatService {
 
 
     @Override
+    @Caching(
+            evict = {@CacheEvict(cacheNames = "Seat", key = "#seatId"), @CacheEvict(cacheNames = "Seats", allEntries = true)}
+    )
     public void deleteSeat(UUID seatId) {
         seatRepository.deleteById(seatId);
     }

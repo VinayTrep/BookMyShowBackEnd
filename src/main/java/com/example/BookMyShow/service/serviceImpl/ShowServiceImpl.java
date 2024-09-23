@@ -14,6 +14,9 @@ import com.example.BookMyShow.repository.ShowRepository;
 import com.example.BookMyShow.service.ShowService;
 import com.example.BookMyShow.service.Strategy.PriceGenerationFactory;
 import com.example.BookMyShow.service.Strategy.PriceGenerationStrategy;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -37,6 +40,7 @@ public class ShowServiceImpl implements ShowService {
 
 
     @Override
+    @CachePut(value = "Show",key = "#createShowRequestDto.auditoriumId()")
     public BMSShowResponseDto createShow(CreateShowRequestDto createShowRequestDto)
             throws AuditoriumNotFoundException, MovieNotFoundException {
         Auditorium auditorium = auditoriumRepository.findById(createShowRequestDto.auditoriumId())
@@ -60,12 +64,14 @@ public class ShowServiceImpl implements ShowService {
     }
 
     @Override
+    @Cacheable(value = "Show", key = "#showID")
     public BMSShowResponseDto getShow(UUID showId) throws ShowNotFoundException {
         Show show = showRepository.findById(showId).orElseThrow(() -> new ShowNotFoundException("Show Not Found"));
         return BMSShowResponseDto.fromShow(show);
     }
 
     @Override
+    @Cacheable(value = "Show", key = "#auditoriumID")
     public List<BMSShowsResponseDto> getAllShow(UUID auditorId) throws ShowNotFoundException {
         Instant currentTime = Instant.now();
         return showRepository.findAllByAuditoriumIdAndStartTimeGreaterThan(auditorId,currentTime).stream()
@@ -75,6 +81,7 @@ public class ShowServiceImpl implements ShowService {
 
 
     @Override
+    @CachePut(value = "Show",key = "#showID")
     public BMSShowResponseDto updateShow(UUID showID,UpdateShowRequestDto updateShowRequestDto) throws ShowNotFoundException{
         Show show = showRepository.findById(showID).orElseThrow(() -> new ShowNotFoundException("Show Not Found"));
         Movie movie = movieRepository.findById(updateShowRequestDto.movieId()).orElseThrow(() -> new MovieNotFoundException("Movie Not Found"));
@@ -88,6 +95,7 @@ public class ShowServiceImpl implements ShowService {
     }
 
     @Override
+    @CacheEvict(value = "Show",key = "#showID")
     public void deleteShow(UUID showId) {
         showRepository.deleteById(showId);
     }

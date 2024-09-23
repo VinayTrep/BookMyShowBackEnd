@@ -2,13 +2,14 @@ package com.example.BookMyShow.dto;
 
 import com.example.BookMyShow.model.Movie;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
 public record MovieResponseDto(UUID movieId, String title, String genre,
                                int year, String director, int duration,
                                List<String> movieFeatures,
-                               List<MovieActorResponseDto> actors) {
+                               List<MovieActorResponseDto> actors) implements Serializable {
 
 
     public static MovieResponseDto fromEntity(Movie movie) {

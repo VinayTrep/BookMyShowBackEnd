@@ -1,12 +1,16 @@
 package com.example.BookMyShow.dto;
 
 import com.example.BookMyShow.model.Show;
+
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
-public record BMSShowResponseDto(UUID showID,String startTime, String endTime, ShowMovieResponseDto movie,
-                                 ShowAuditoriumResponseDto auditorium, List<ShowSeatResponseDto> showSeats) {
+public record BMSShowResponseDto(UUID showID,String startTime, String endTime,
+                                 ShowMovieResponseDto movie,
+                                 ShowAuditoriumResponseDto auditorium,
+                                 List<ShowSeatResponseDto> showSeats) implements Serializable {
 
 
     public static BMSShowResponseDto fromShow(Show show) {

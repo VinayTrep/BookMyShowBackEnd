@@ -9,6 +9,9 @@ import com.example.BookMyShow.model.City;
 import com.example.BookMyShow.repository.CityRepository;
 import com.example.BookMyShow.service.CityService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,7 +31,7 @@ public class CityServiceImpl implements CityService {
         City city = CreateCityRequestDto.fromCreateCityRequestDto(requestDto);
         return CityResponseDto.fromCity(cityRepository.save(city));
     }
-
+    @Cacheable(value = "City", key = "#id")
     @Override
     public CityResponseDto getCityById(UUID id) throws CityNotFoundException {
         City city = cityRepository.findById(id).orElseThrow( () -> new  CityNotFoundException("City with given id does not exist"));
@@ -39,7 +42,7 @@ public class CityServiceImpl implements CityService {
     public List<CitiesResponseDto> getAllCities() {
         return cityRepository.findAll().stream().map(CitiesResponseDto::fromCity).toList();
     }
-
+    @CachePut(value = "City", key = "#id")
     @Override
     public CityResponseDto updateCity(UUID id, UpdateCityRequestDto requestDto) throws CityNotFoundException {
         City city = cityRepository.findById(id).orElseThrow(() -> new  CityNotFoundException("City with given id does not exist"));
@@ -48,6 +51,7 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
+    @CacheEvict(cacheNames = "City", key = "#id")
     public void deleteCity(UUID id) {
         cityRepository.deleteById(id);
     }

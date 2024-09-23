@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 public class Ticket extends BaseModel {
     private Instant timeOfBooking;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<ShowSeat> showSeats;
     @ManyToOne
     private Show show;

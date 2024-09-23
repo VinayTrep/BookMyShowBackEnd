@@ -15,6 +15,7 @@ public record CreatePaymentRequestDto(Ticket ticket) {
         payment.setTicket(createPaymentRequestDto.ticket);
         payment.setPaymentMode(PaymentMode.WALLET);
         payment.setStatus(PaymentStatus.SUCCESS);
+        payment.setAmount(createPaymentRequestDto.ticket.getTotalPrice());
         return payment;
     }
 }

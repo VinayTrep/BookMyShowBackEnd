@@ -11,7 +11,11 @@ import com.example.BookMyShow.repository.CityRepository;
 import com.example.BookMyShow.repository.TheaterRepository;
 import com.example.BookMyShow.service.TheaterService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +46,7 @@ public class TheaterServiceImpl implements TheaterService {
     }
 
     @Override
+    @CachePut(value = "Theater",key = "#id")
     public TheaterResponseDto updateTheater(UUID id, UpdateTheaterRequestDto theaterRequestDto) throws TheaterNotFoundException, CityNotFoundException {
         City city = cityRepository.findById(theaterRequestDto.cityId()).orElseThrow(()-> new CityNotFoundException("City not found"));
         Theater theater = theaterRepository.findById(id).orElseThrow(()-> new TheaterNotFoundException("Theater not found"));
@@ -55,11 +60,13 @@ public class TheaterServiceImpl implements TheaterService {
     }
 
     @Override
+    @CacheEvict(cacheNames = "Theater",key = "#id")
     public void deleteTheater(UUID id) {
         theaterRepository.deleteById(id);
     }
 
     @Override
+    @Cacheable(value = "Theater", key = "#id")
     public TheaterResponseDto getTheater(UUID id) throws TheaterNotFoundException {
         Theater theater = theaterRepository.findById(id).orElseThrow(()-> new TheaterNotFoundException("Theater not found"));
 

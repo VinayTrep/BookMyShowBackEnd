@@ -9,6 +9,7 @@ import com.example.BookMyShow.model.constants.SeatStatus;
 import com.example.BookMyShow.model.constants.SeatType;
 import com.example.BookMyShow.service.SeatService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +27,7 @@ public class SeatController {
     }
 
     @PostMapping("/")
+
     public ResponseEntity<SeatResponseDto> addSeat(@RequestBody CreateSeatRequestDto seatRequestDto) {
         validateSeatStatusAndType(seatRequestDto.seatStatus(),seatRequestDto.SeatType(),seatRequestDto.SeatNumber());
         return ResponseEntity.ok(seatService.addSeat(seatRequestDto));
